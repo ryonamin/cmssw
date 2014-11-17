@@ -32,11 +32,11 @@ private:
   std::string muon_track_for_momentum;
   std::string muon_track_for_momentum_primary;
   std::vector<std::string> muon_tracks_for_momentum;
-  edm::InputTag muon_photon_match_src;
-  edm::Handle<reco::CandViewMatchMap> muon_photon_match_map;
+  //edm::InputTag muon_photon_match_src;
+  //edm::Handle<reco::CandViewMatchMap> muon_photon_match_map;
   double electron_muon_veto_dR;
   std::vector<std::pair<float,float> > muon_eta_phis;
-  edm::InputTag trigger_summary_src;
+  //edm::InputTag trigger_summary_src;
   double trigger_match_max_dR;
   trigger::TriggerObjectCollection L3_muons;
   std::vector<int> L3_muons_matched;
@@ -51,9 +51,9 @@ Zprime2muLeptonProducer::Zprime2muLeptonProducer(const edm::ParameterSet& cfg)
     electron_selector(cfg.getParameter<std::string>("electron_cuts")),
     muon_track_for_momentum(cfg.getParameter<std::string>("muon_track_for_momentum")),
     muon_track_for_momentum_primary(muon_track_for_momentum),
-    muon_photon_match_src(cfg.getParameter<edm::InputTag>("muon_photon_match_src")),
+    //muon_photon_match_src(cfg.getParameter<edm::InputTag>("muon_photon_match_src")),
     electron_muon_veto_dR(cfg.getParameter<double>("electron_muon_veto_dR")),
-    trigger_summary_src(cfg.getParameter<edm::InputTag>("trigger_summary_src")),
+    //trigger_summary_src(cfg.getParameter<edm::InputTag>("trigger_summary_src")),
     trigger_match_max_dR(cfg.getParameter<double>("trigger_match_max_dR"))
 {
   if (cfg.existsAs<std::vector<std::string> >("muon_tracks_for_momentum"))
@@ -196,6 +196,7 @@ std::pair<pat::Muon*,int> Zprime2muLeptonProducer::doLepton(const edm::Event& ev
   if (new_mu == 0)
     return std::make_pair(new_mu, -1);
 
+#if 0
   // Simply store the photon four-vector for now in the muon as a
   // userData.
   if (muon_photon_match_map.isValid()) {
@@ -205,6 +206,7 @@ std::pair<pat::Muon*,int> Zprime2muLeptonProducer::doLepton(const edm::Event& ev
       new_mu->addUserInt("photon_index", mm[cand].key());
     }
   }
+#endif
 
   // Do our own trigger matching and embed the results. After the next
   // pair of function calls, there will be new user floats:
@@ -253,6 +255,7 @@ edm::OrphanHandle<std::vector<T> > Zprime2muLeptonProducer::doLeptons(edm::Event
 }
 
 void Zprime2muLeptonProducer::produce(edm::Event& event, const edm::EventSetup& setup) {
+#if 0
   // Grab the match map between PAT photons and PAT muons so we can
   // embed the photon candidates later.
   event.getByLabel(muon_photon_match_src, muon_photon_match_map);
@@ -279,6 +282,7 @@ void Zprime2muLeptonProducer::produce(edm::Event& event, const edm::EventSetup& 
   L3_muons_matched.resize(L3_muons.size(), 0);
   prescaled_L3_muons_matched.clear();
   prescaled_L3_muons_matched.resize(prescaled_L3_muons.size(), 0);
+#endif
 
   // Using the main choice for momentum assignment, make the primary
   // collection of muons, which will have branch name

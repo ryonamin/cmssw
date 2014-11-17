@@ -115,8 +115,8 @@ def addHEEPId(process):
     process.patDefaultSequence.replace(process.patElectrons, process.kt6PFJetsForIsolation * process.HEEPId * process.patElectrons)
 
 def AODOnly(process):
-    from PhysicsTools.PatAlgos.tools.coreTools import restrictInputToAOD
-    restrictInputToAOD(process)
+    #from PhysicsTools.PatAlgos.tools.coreTools import restrictInputToAOD
+    #restrictInputToAOD(process)
     removeMuonMCClassification(process) # throw the baby out with the bathwater...
     removeSimLeptons(process)
 

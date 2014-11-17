@@ -175,7 +175,7 @@ double GravitonCos_3_PDF(double *x, double *par) {
 //=============================================================================
 double asym2D(double *x, double *par) {
   const bool debug = false;
-  bool paramsChanged = false;
+  //bool paramsChanged = false;
   static bool first_event = true;
   static double parsave[3];
   if (first_event) {
@@ -186,7 +186,7 @@ double asym2D(double *x, double *par) {
   // Enter into this loop if parameters have changed or this is first time
   // in loop.
   if ( par[0]!=parsave[0] || par[1]!=parsave[1] || par[2]!=parsave[2] ) {
-    paramsChanged = true;
+    //paramsChanged = true;
     for (int i = 0; i < 3; i++) parsave[i] = par[i];
     if (asymFitManager.debug())
       edm::LogVerbatim("asym2D") 

@@ -11,7 +11,9 @@ process.options = cms.untracked.PSet(wantSummary = cms.untracked.bool(True))
 process.source = cms.Source('PoolSource', fileNames = cms.untracked.vstring('file:PlaceHolder.root'))
 
 # Load services needed to run the PAT.
-process.load('Configuration.Geometry.GeometryIdeal_cff')
+#process.load('Configuration.Geometry.GeometryIdeal_cff')
+process.load('Configuration.Geometry.GeometryExtended2023_cff')
+process.load('Configuration.Geometry.GeometryExtended2023Reco_cff')
 process.load('Configuration.StandardSequences.MagneticField_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 process.GlobalTag.globaltag = cms.string('PlaceHolder::All')
@@ -35,7 +37,8 @@ process.out = cms.OutputModule('PoolOutputModule',
                                outputCommands = cms.untracked.vstring(
                                    'drop *',
                                    'keep patElectrons_cleanPatElectrons__*',
-                                   'keep patMuons_cleanPatMuons__*',
+                                   #'keep patMuons_cleanPatMuons__*',
+                                   'keep patMuons_*_*_*',
                                    'keep patJets_cleanPatJets__*',
                                    'keep patPhotons_cleanPatPhotons__*',
                                    'keep patMETs_patMETs*__PAT',
@@ -72,14 +75,14 @@ process.load('PhysicsTools.PatAlgos.patSequences_cff')
 # in output module anyway). This may break jet-tau cleaning, but not
 # using the jets yet anyway. This should all be fixed with a
 # consistent set of 52 samples, as this only occurs for 51 MC input.
-del process.patTaus.tauIDSources.againstElectronMVA
+#del process.patTaus.tauIDSources.againstElectronMVA
 del process.patTaus.tauIDSources.againstMuonMedium
 process.cleanPatTaus.preselection = process.cleanPatTaus.preselection.value().replace('againstMuonMedium', 'againstMuonTight')
 
-from PATTools import pruneMCLeptons, addMuonMCClassification, addHEEPId
+from PATTools import pruneMCLeptons, addMuonMCClassification#, addHEEPId
 pruneMCLeptons(process, use_sim=True) # need to decide whether to move AODOnly() call in here, if so use_sim should just be set False
 addMuonMCClassification(process)
-addHEEPId(process)
+#addHEEPId(process)
 
 from PhysicsTools.PatAlgos.tools.trigTools import switchOnTrigger, switchOnTriggerMatchEmbedding
 switchOnTrigger(process)
@@ -136,21 +139,27 @@ process.goodDataNoScraping = cms.Path(process.noscraping)
 process.goodDataAll = cms.Path(process.hltPhysicsDeclared * process.primaryVertexFilter * process.noscraping)
 
 # Add MET and jets. Configuration to be revisited later.
-from PhysicsTools.PatAlgos.tools.metTools import addPfMET, addTcMET
-addPfMET(process)
-addTcMET(process)
+#from PhysicsTools.PatAlgos.tools.metTools import addPfMET, addTcMET
+#addPfMET(process)
+#addTcMET(process)xs
+from PhysicsTools.PatAlgos.tools.metTools import addMETCollection
+addMETCollection(process,'addPfMET','pfType1CorrectedMet')
+addMETCollection(process,'addTcMET','tcMet')
 
 from PhysicsTools.PatAlgos.tools.jetTools import switchJetCollection
+#switchJetCollection(process, 
+#                    cms.InputTag('ak5PFJets'),   
+#                    doJTA            = True,            
+#                    doBTagging       = True,            
+#                    jetCorrLabel     = ('AK5PF', ['L1FastJet', 'L2Relative', 'L3Absolute']),  
+#                    doType1MET       = False,            
+#                    genJetCollection = cms.InputTag("ak5GenJets"),
+#                    doJetID      = False,
+#                    jetIdLabel   = "ak5"
+#                    )
 switchJetCollection(process, 
-                    cms.InputTag('ak5PFJets'),   
-                    doJTA            = True,            
-                    doBTagging       = True,            
-                    jetCorrLabel     = ('AK5PF', ['L1FastJet', 'L2Relative', 'L3Absolute']),  
-                    doType1MET       = False,            
-                    genJetCollection = cms.InputTag("ak5GenJets"),
-                    doJetID      = False,
-                    jetIdLabel   = "ak5"
-                    )
+                    jetSource   = cms.InputTag('ak5PFJets'),
+                   )
 
 # Make a collection of muons with our final selection applied so that
 # the muon-jet cleaning will use only muons passing those cuts. This

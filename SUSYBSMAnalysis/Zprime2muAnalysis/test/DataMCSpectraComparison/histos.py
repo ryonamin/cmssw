@@ -5,14 +5,16 @@ from SUSYBSMAnalysis.Zprime2muAnalysis.Zprime2muAnalysis_cff import switch_hlt_p
 from SUSYBSMAnalysis.Zprime2muAnalysis.Zprime2muAnalysis_cfg import process
 #process.source.fileNames = ['/store/user/slava/DYToMuMu_M-2000_CT10_TuneZ2star_8TeV-powheg-pythia6/datamc_dy2000/ecac376f8fa7ccc229aaa06d757d785a/pat_1_1_G72.root']
 #process.maxEvents.input = 100
+process.source.fileNames = ['file:pat.root']
 from SUSYBSMAnalysis.Zprime2muAnalysis.hltTriggerMatch_cfi import trigger_match, prescaled_trigger_match, trigger_paths, prescaled_trigger_paths, overall_prescale, offline_pt_threshold, prescaled_offline_pt_threshold
+
 
 # Since the prescaled trigger comes with different prescales in
 # different runs/lumis, this filter prescales it to a common factor to
 # make things simpler.
-process.load('SUSYBSMAnalysis.Zprime2muAnalysis.PrescaleToCommon_cff')
-process.PrescaleToCommon.trigger_paths = prescaled_trigger_paths
-process.PrescaleToCommon.overall_prescale = overall_prescale
+#process.load('SUSYBSMAnalysis.Zprime2muAnalysis.PrescaleToCommon_cff')
+#process.PrescaleToCommon.trigger_paths = prescaled_trigger_paths
+#process.PrescaleToCommon.overall_prescale = overall_prescale
 
 # The histogramming module that will be cloned multiple times below
 # for making histograms with different cut/dilepton combinations.
@@ -53,14 +55,14 @@ cuts = {
 #    'VBTF'     : VBTFSelection,
 #    'OurOld'   : OurSelectionOld,
 #    'OurEPS'   : OurSelection2011EPS,
-    'OurNew'   : OurSelectionNew,
-    'Our2012'  : OurSelectionDec2012,
-    'OurNoIso' : OurSelectionDec2012,
-    'EmuVeto'  : OurSelectionDec2012,
+#    'OurNew'   : OurSelectionNew,
+#    'Our2012'  : OurSelectionDec2012,
+#    'OurNoIso' : OurSelectionDec2012,
+#    'EmuVeto'  : OurSelectionDec2012,
     'Simple'   : OurSelectionDec2012, # The selection cuts in the module listed here are ignored below.
 #    'VBTFMuPrescaled' : VBTFSelection,
-    'OurMuPrescaledNew'  : OurSelectionNew,
-    'OurMuPrescaled2012' : OurSelectionDec2012
+#    'OurMuPrescaledNew'  : OurSelectionNew,
+#    'OurMuPrescaled2012' : OurSelectionDec2012
     }
 
 # Loop over all the cut sets defined and make the lepton, allDilepton
@@ -143,11 +145,12 @@ for cut_name, Selection in cuts.iteritems():
 
     # Finally, make the path for this set of cuts.
     pathname = 'path' + cut_name
-    pobj = process.muonPhotonMatch * reduce(lambda x,y: x*y, path_list)
+    #pobj = process.muonPhotonMatch * reduce(lambda x,y: x*y, path_list)
+    pobj = reduce(lambda x,y: x*y, path_list)
     if 'VBTF' not in cut_name and cut_name != 'Simple':
         pobj = process.goodDataFilter * pobj
-    if 'MuPrescaled' in cut_name:
-        pobj = process.PrescaleToCommon * pobj
+    #if 'MuPrescaled' in cut_name:
+    #    pobj = process.PrescaleToCommon * pobj
     path = cms.Path(pobj)
     setattr(process, pathname, path)
 
