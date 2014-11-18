@@ -12,11 +12,14 @@ process.source = cms.Source('PoolSource', fileNames = cms.untracked.vstring('fil
 
 # Load services needed to run the PAT.
 #process.load('Configuration.Geometry.GeometryIdeal_cff')
-process.load('Configuration.Geometry.GeometryExtended2023_cff')
-process.load('Configuration.Geometry.GeometryExtended2023Reco_cff')
-process.load('Configuration.StandardSequences.MagneticField_cff')
+process.load('Configuration.Geometry.GeometryExtended2019Reco_cff')
+process.load('Configuration.Geometry.GeometryExtended2019_cff')
+#process.load('Configuration.StandardSequences.MagneticField_cff')
+process.load('Configuration.StandardSequences.MagneticField_38T_PostLS1_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
-process.GlobalTag.globaltag = cms.string('PlaceHolder::All')
+#process.GlobalTag.globaltag = cms.string('PlaceHolder::All')
+from Configuration.AlCa.GlobalTag import GlobalTag
+process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:upgrade2019', '')
 
 # Configure the MessageLogger ~sanely. Also direct it to let the PAT
 # summary tables be reported -- nice to see how many events had no
