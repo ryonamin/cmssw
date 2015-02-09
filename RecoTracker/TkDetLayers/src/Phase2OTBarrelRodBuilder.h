@@ -18,7 +18,18 @@ class Phase2OTBarrelRodBuilder {
   Phase2OTBarrelRod* build(const GeometricDet* thePhase2OTBarrelRod,
 			       const TrackerGeometry* theGeomDetGeometry);
 
-  
+  // helper class to compute radial position of rod, inner/outer modules
+  class RefRs {
+   public:
+    RefRs(std::vector<const GeometricDet*>& modules); 
+    const double getRodR() const { return rodR; }
+    const double getInnerModuleR() const { return innerModuleR; }
+    const double getOuterModuleR() const { return outerModuleR; }
+   private:
+    double rodR; 
+    double innerModuleR; 
+    double outerModuleR; 
+  }; 
 };
 
 
