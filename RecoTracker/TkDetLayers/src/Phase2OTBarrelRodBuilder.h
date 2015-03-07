@@ -18,6 +18,18 @@ class Phase2OTBarrelRodBuilder {
   Phase2OTBarrelRod* build(const GeometricDet* thePhase2OTBarrelRod,
 			       const TrackerGeometry* theGeomDetGeometry);
 
+ private:
+  class RadiiHandler {
+    public:
+     RadiiHandler(const std::vector<const GeometricDet*>& sensors);
+     const double getRodCenterR() const { return rodR; }
+     const double getInnerModuleCenterR() const { return inModR; }
+     const double getOuterModuleCenterR() const { return otModR; }
+    private:
+     double rodR;
+     double inModR;
+     double otModR;
+  };
   
 };
 
