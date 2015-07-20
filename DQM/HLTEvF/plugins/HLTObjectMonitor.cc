@@ -466,7 +466,9 @@ HLTObjectMonitor::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
 	   //caloHT pt
 	   else if (pathName == caloHtPt_pathName)
 	     {
-	       for (const auto & key : keys) caloHtPt_->Fill(objects[key].pt());
+	       for (const auto & key : keys) {
+                 if(objects[key].id()==89) caloHtPt_->Fill(objects[key].pt());
+               }
 	     }
 
 	   //jetAK8 pt + mass
