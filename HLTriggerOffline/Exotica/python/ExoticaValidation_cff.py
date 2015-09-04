@@ -45,10 +45,10 @@ recoExoticaValidationMHTNoMu = cms.EDProducer(
 recoExoticaValidationCaloHT = cms.EDProducer(
     "CaloMETProducer",
     src = cms.InputTag("ak4CaloJets"),
-    noHF = cms.bool(False),
+    noHF = cms.bool( True ),
     alias = cms.string('CaloMHT'),
     globalThreshold = cms.double(30.0),
-    calculateSignificance = cms.bool( True ),
+    calculateSignificance = cms.bool( False ),
     jets = cms.InputTag("ak4CaloJets") # for significance calculation
     )
 
