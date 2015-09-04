@@ -11,7 +11,9 @@ myinput   = ""
 myfileNames = cms.untracked.vstring(
     #'/store/relval/CMSSW_7_2_0_pre1/RelValZEE_13/GEN-SIM-RECO/POSTLS172_V1-v1/00000/0A69FE2A-DAFD-E311-9FA2-00261894391C.root',
     #'/store/relval/CMSSW_7_2_0_pre1/RelValZEE_13/GEN-SIM-RECO/POSTLS172_V1-v1/00000/4ACF05B1-ABFD-E311-BC8C-0026189438BC.root'
-    'file:/results_exo_nobptx.root'
+#    'file:/results_exo_nobptx.root'
+#'/store/relval/CMSSW_7_6_0_pre2/RelValRSGravitonToGaGa_13/GEN-SIM-RECO/75X_mcRun2_asymptotic_v2-v1/00000/34EB37FF-4937-E511-A1E1-0025905A6132.root'
+'file:../../../hltSim.root'
     )
 
 for i in range(0,len(sys.argv)):
@@ -180,7 +182,7 @@ print myfileNames
 # process.hltMuonValidator.recMuonCut = "isGlobalMuon && eta < 1.2"
 ##############################################################################
 
-hltProcessName = "HLT"
+hltProcessName = "TEST"
 process.hltExoticaValidator.hltProcessName = hltProcessName
 
 process.load("Configuration.StandardSequences.Reconstruction_cff")
